@@ -1,9 +1,9 @@
-import bodyParser from "body-parser";
-import express from "express";
-import { Application, RequestHandler } from "express";
-import UsuarioRoutes from "../service/usuarioRoutes";
-import RegistroRoutes from "../service/registroRoutes";
-import cors from "cors";
+import bodyParser from 'body-parser';
+import express from 'express';
+import { Application, RequestHandler } from 'express';
+import UsuarioRoutes from '../service/usuarioRoutes';
+import RegistroRoutes from '../service/registroRoutes';
+import cors from 'cors';
 
 class Server {
   public server: Application;
@@ -21,11 +21,11 @@ class Server {
     this.server
       .listen(port, () => {
         return console.log(
-          "\x1b[33m%s\x1b[0m",
+          '\x1b[33m%s\x1b[0m',
           `Server :: Running @ 'http://localhost:${port}'`
         );
       })
-      .on("error", (_error) => console.log("Error: ", _error.message));
+      .on('error', (_error) => console.log('Error: ', _error.message));
 
     this.mountRoutes();
   }
@@ -42,6 +42,10 @@ class Server {
 
   public post(path: string, callback: RequestHandler) {
     this.server.post(path, callback);
+  }
+
+  public delete(path: string, callback: RequestHandler) {
+    this.server.delete(path, callback);
   }
 }
 
