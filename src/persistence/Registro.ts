@@ -1,9 +1,9 @@
 import Medicao from './Medicao';
 
 class Registro {
-    private idRegistro: string;
-    private medicao: Medicao;
-    private data: Date;
+    idRegistro: string;
+    medicao: Medicao;
+    data: Date;
 
     constructor(idRegistro: string, medicao: Medicao, data: Date) {
         this.idRegistro = idRegistro;

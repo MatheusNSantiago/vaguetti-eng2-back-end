@@ -5,52 +5,55 @@ import IRegistroDAO from './IRegistroDAO';
 import { v4 as uuidv4 } from 'uuid';
 
 class RegistroDAOMongoose implements IRegistroDAO {
-    async buscarRegistros(cpf: string): Promise<Registro[]> {
-        const user = await UserMongoose.findOne({ cpf: cpf });
+  async buscarRegistros(cpf: string): Promise<Registro[]> {
+    const user = await UserMongoose.findOne({ cpf: cpf });
 
-        if (user !== null) return user.registros;
-        return [];
+    if (user !== null) return user.registros;
+    return [];
+  }
+
+  async salvarRegistro(cpf: string, medicao: Medicao): Promise<Registro> {
+    const user = await UserMongoose.findOne({ cpf: cpf });
+    const registro = new Registro(uuidv4(), medicao, new Date());
+
+    if (user !== null) {
+      user.registros.push(registro);
+      await UserMongoose.updateOne({ cpf: cpf }, user);
     }
 
-    async salvarRegistro(cpf: string, medicao: Medicao): Promise<Registro> {
-        const user = await UserMongoose.findOne({ cpf: cpf });
-        const registro = new Registro(uuidv4(), medicao, new Date());
+    return registro;
+  }
 
-        if (user !== null) {
-            user.registros.push(registro);
-            await UserMongoose.updateOne({ cpf: cpf }, user);
-        }
+  async excluirRegistro(cpf: string, idRegistro: string): Promise<boolean> {
+    const user = await UserMongoose.findOne({ cpf: cpf });
 
-        return registro;
+    if (user !== null) {
+      let registros = user.registros;
+      registros = registros.filter((r) => r.idRegistro !== idRegistro);
+
+      await UserMongoose.updateOne({ cpf, registros }, user);
+      return true;
     }
 
-    async excluirRegistro(cpf: string, idRegistro: string): Promise<boolean> {
-        const user = await UserMongoose.findOne({ cpf: cpf });
+    return false;
+  }
 
-        if (user !== null) {
-            user.registros = user.registros.filter(
-                (r) => r.getIdRegistro() !== idRegistro
-            );
-            await UserMongoose.updateOne({ cpf: cpf }, user);
-            return true;
-        }
+  async alterarRegistro(cpf: string, registro: Registro): Promise<Registro> {
+    const user = await UserMongoose.findOne({ cpf: cpf });
 
-        return false;
+    if (user !== null) {
+      let registros = user.registros;
+
+      registros = registros.map((r) => {
+        if (r.idRegistro === registro.idRegistro) return registro;
+        return r;
+      });
+
+      await UserMongoose.updateOne({ cpf: cpf, registros: registros }, user);
     }
 
-    async alterarRegistro(cpf: string, registro: Registro): Promise<Registro> {
-        const user = await UserMongoose.findOne({ cpf: cpf });
-
-        if (user !== null) {
-            user.registros = user.registros.map((r) => {
-                if (r.getIdRegistro() === registro.getIdRegistro()) return registro;
-                return r;
-            });
-            await UserMongoose.updateOne({ cpf: cpf }, user);
-        }
-
-        return registro;
-    }
+    return registro;
+  }
 }
 
 export default RegistroDAOMongoose;

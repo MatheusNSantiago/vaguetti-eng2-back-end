@@ -18,7 +18,7 @@ class RegistroController implements IRegistroController {
     req: BuscarRegistrosRequest,
     res: BuscarRegistrosResponse
   ): Promise<void> {
-    const cpf = req.body.cpf;
+    const cpf = req.params.cpf
 
     try {
       let registros = await registroDAO.buscarRegistros(cpf);
@@ -64,7 +64,7 @@ class RegistroController implements IRegistroController {
 
     try {
       await registroDAO.alterarRegistro(cpf, registro);
-      return res.json({ registro: registro, msgCode: 200 });
+      return res.json({ registro, msgCode: 200 });
     } catch (error) {
       return res.json({ registro: {}, msgCode: 500, msg: error });
     }

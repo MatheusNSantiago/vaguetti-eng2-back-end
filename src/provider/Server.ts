@@ -32,7 +32,6 @@ class Server {
 
   private mountRoutes(): void {
     new UsuarioRoutes().init();
-
     new RegistroRoutes().init();
   }
 
@@ -46,6 +45,10 @@ class Server {
 
   public delete(path: string, callback: RequestHandler) {
     this.server.delete(path, callback);
+  }
+
+  public patch(path: string, callback: RequestHandler) {
+    this.server.patch(path, callback);
   }
 }
 
