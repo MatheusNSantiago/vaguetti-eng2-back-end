@@ -31,12 +31,9 @@ class Server {
   }
 
   private mountRoutes(): void {
-    const usuarioRoutes = new UsuarioRoutes();
-    usuarioRoutes.post();
-    usuarioRoutes.get();
+    new UsuarioRoutes().init();
 
-    const registroRoutes = new RegistroRoutes();
-    registroRoutes.post();
+    new RegistroRoutes().init();
   }
 
   public get(path: string, callback: RequestHandler) {

@@ -7,7 +7,7 @@ import IUserController, {
 import IUserDAO from '../persistence/DAO/user/IUserDAO';
 import UserDAOMongoose from '../persistence/DAO/user/UserDAOMongoose';
 
-// Config não funciona, por algum motivo só da pra acessar o userDAO se tiver em escopo geral
+// Config não funciona, por algum motivo só da pra acessar o DAOMongoose se tiver em escopo geral declarado aqui
 const userDAO: IUserDAO = new UserDAOMongoose()
 class UserController implements IUserController {
   async login(req: UserLoginRequest, res: UserLoginResponse) {

@@ -1,17 +1,23 @@
-import RegistroController from "../controller/RegistroController";
-import Server from "../provider/Server";
-import iRoutes from "./iRoutes";
+import RegistroController from '../controller/RegistroController';
+import Server from '../provider/Server';
+import iRoutes from './iRoutes';
 
 class RegistroRoutes implements iRoutes {
-    controller = new RegistroController();
+  controller = new RegistroController();
 
-    get(): void { }
+  init(): void {
+    this.get();
+    this.post();
+    this.delete();
+  }
 
-    post(): void {
-        Server.post("/registro", this.controller.adicionarRegistro);
-    }
+  get(): void { }
 
-    delete(): void { }
+  post(): void {
+    Server.post('/registro', this.controller.adicionarRegistro);
+  }
+
+  delete(): void { }
 }
 
 export default RegistroRoutes;

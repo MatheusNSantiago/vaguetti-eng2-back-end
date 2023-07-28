@@ -1,7 +1,7 @@
 import Registro from '../../../persistence/Registro';
 import Medicao from '../../Medicao';
 import UserMongoose from '../../models/UserMongoose';
-import IRegistroDAO from './iRegistroDAO';
+import IRegistroDAO from './IRegistroDAO';
 import { v4 as uuidv4 } from 'uuid';
 
 class RegistroDAOMongoose implements IRegistroDAO {

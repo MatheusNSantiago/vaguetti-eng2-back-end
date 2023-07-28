@@ -1,6 +1,5 @@
-import config from '../config';
 import RegistroDAOMongoose from '../persistence/DAO/registro/RegistroDAOMongoose';
-import IRegistroDAO from '../persistence/DAO/registro/iRegistroDAO';
+import IRegistroDAO from '../persistence/DAO/registro/IRegistroDAO';
 import IRegistroController, {
   AdicionarRegistroRequest,
   AdicionarRegistroResponse,
@@ -12,13 +11,9 @@ import IRegistroController, {
   ExcluirRegistroResponse,
 } from './IRegistroController';
 
+// Config não funciona, por algum motivo só da pra acessar o DAOMongoose se tiver em escopo geral declarado aqui
+const registroDAO: IRegistroDAO = new RegistroDAOMongoose();
 class RegistroController implements IRegistroController {
-  registroDAO: IRegistroDAO;
-
-  constructor() {
-    this.registroDAO = new RegistroDAOMongoose();
-  }
-
   async buscarRegistros(
     req: BuscarRegistrosRequest,
     res: BuscarRegistrosResponse
@@ -26,7 +21,7 @@ class RegistroController implements IRegistroController {
     const cpf = req.body.cpf;
 
     try {
-      let registros = await this.registroDAO.buscarRegistros(cpf);
+      let registros = await registroDAO.buscarRegistros(cpf);
       return res.json({ registros, msgCode: 200 });
     } catch (error) {
       return res.json({ registros: [], msgCode: 500, msg: error });
@@ -40,7 +35,7 @@ class RegistroController implements IRegistroController {
     const { cpf, medicao } = req.body;
 
     try {
-      let registro = await this.registroDAO.salvarRegistro(cpf, medicao);
+      let registro = await registroDAO.salvarRegistro(cpf, medicao);
       return res.json({ registro: registro, msgCode: 200 });
     } catch (error) {
       return res.json({ registro: {}, msgCode: 500, msg: error });
@@ -54,7 +49,7 @@ class RegistroController implements IRegistroController {
     const { cpf, idRegistro } = req.body;
 
     try {
-      await this.registroDAO.excluirRegistro(cpf, idRegistro);
+      await registroDAO.excluirRegistro(cpf, idRegistro);
       return res.json({ msgCode: 200 });
     } catch (error) {
       return res.json({ msgCode: 500, msg: error });
@@ -68,7 +63,7 @@ class RegistroController implements IRegistroController {
     const { cpf, registro } = req.body;
 
     try {
-      await this.registroDAO.alterarRegistro(cpf, registro);
+      await registroDAO.alterarRegistro(cpf, registro);
       return res.json({ registro: registro, msgCode: 200 });
     } catch (error) {
       return res.json({ registro: {}, msgCode: 500, msg: error });
