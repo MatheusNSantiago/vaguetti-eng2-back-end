@@ -9,6 +9,7 @@ class UsuarioRoutes implements iRoutes {
     this.get();
     this.post();
     this.delete();
+    this.patch();
   }
 
   get() {
@@ -18,6 +19,7 @@ class UsuarioRoutes implements iRoutes {
   post() {
     Server.post('/user', this.controller.registrar);
   }
+  patch() { }
 
   delete() { }
 }
